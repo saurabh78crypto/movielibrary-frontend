@@ -36,7 +36,7 @@ const HomeScreen = () => {
   const handleSearchSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.get(`/api/fetchMovies?q=${encodeURIComponent(searchQuery)}`);
+      const response = await axios.get(`http://www.omdbapi.com/?s=${searchQuery}&apikey=6cb11221`);
       setMovies(response.data.Search);
       setErrorMessage('');
     } catch (error) {
