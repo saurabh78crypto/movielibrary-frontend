@@ -18,7 +18,7 @@ const MovieCard = ({ movie, playlists, updatePlaylists }) => {
                 libraryId: playlistId,
                 movie: movie
             }
-            const response = await axios.post('http://localhost:5000/api/auth/addmovie',data);
+            const response = await axios.post('https://movielibrary-backend-r4jq.onrender.com/api/auth/addmovie',data);
             setPopupMessage(`The "${movie.Title}" added successfully.`)
             setShowPopup(true);
 
@@ -48,7 +48,7 @@ const MovieCard = ({ movie, playlists, updatePlaylists }) => {
         try {
           const token = localStorage.getItem('token');
           
-          const response = await axios.post('http://localhost:5000/api/auth/newlibrary', {playlistName}, {
+          const response = await axios.post('https://movielibrary-backend-r4jq.onrender.com/api/auth/newlibrary', {playlistName}, {
             headers: {
               'Content-Type': 'application/json',
               'Authorization': `Bearer ${token}`

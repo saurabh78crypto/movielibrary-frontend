@@ -18,7 +18,7 @@ const SignUp = () => {
 
   const onSubmit = async (data) => {
     try {
-      const response = await axios.post('http://localhost:5000/api/auth/reguser', data);
+      const response = await axios.post('https://movielibrary-backend-r4jq.onrender.com/api/auth/reguser', data);
         setCurrentUser(response.data.user);
         setSuccessMessage(`Hurray, ${response.data.user.username} registered successfully` );
         setShowSuccessMessage(true);
