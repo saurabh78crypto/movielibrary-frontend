@@ -66,7 +66,7 @@ const MovieSlider = ({playlists}) => {
     try {
       const token = localStorage.getItem('token');
       
-      const response = await axios.post('https://movielibrary-backend-r4jq.onrender.com/api/auth/newlibrary', {playlistName}, {
+      const response = await axios.post('https://movielibrary-backend-jw44.onrender.com/api/auth/newlibrary', {playlistName}, {
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${token}`

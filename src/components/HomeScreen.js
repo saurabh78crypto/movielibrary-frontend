@@ -15,7 +15,7 @@ const HomeScreen = () => {
     const fetchPlaylist = async () => {
       try {
         const token = localStorage.getItem('token');
-        const response = await axios.get('https://movielibrary-backend-r4jq.onrender.com/api/auth/fetchplaylists', {
+        const response = await axios.get('https://movielibrary-backend-jw44.onrender.com/api/auth/fetchplaylists', {
           headers:{
             Authorization: `Bearer ${token}`
           }
