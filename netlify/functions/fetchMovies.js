@@ -1,4 +1,4 @@
-exports.handler = async function(event, context) {
+export const handler = async function(event) {
     const query = event.queryStringParameters.q;
     const apiKey = '6cb11221'; 
     const response = await fetch(`http://www.omdbapi.com/?s=${query}&apikey=${apiKey}`);
