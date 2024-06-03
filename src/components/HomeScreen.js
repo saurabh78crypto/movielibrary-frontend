@@ -36,7 +36,7 @@ const HomeScreen = () => {
   const handleSearchSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.get(`http://www.omdbapi.com/?s=${encodeURIComponent(searchQuery)}&apikey=6cb11221`);
+      const response = await axios.get(`https://movielibrary-backend-jw44.onrender.com/api/auth/searchmovie?query=${encodeURIComponent(searchQuery)}`);
       setMovies(response.data.Search);
       setErrorMessage('');
     } catch (error) {
