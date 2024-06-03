@@ -37,6 +37,7 @@ const HomeScreen = () => {
     e.preventDefault();
     try {
       const response = await axios.get(`https://movielibrary-backend-jw44.onrender.com/api/auth/searchmovie?query=${encodeURIComponent(searchQuery)}`);
+      console.log('response: ', response);
       setMovies(response.data.Search);
       setErrorMessage('');
     } catch (error) {
