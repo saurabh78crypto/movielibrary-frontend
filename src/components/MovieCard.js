@@ -5,7 +5,7 @@ import { Modal, Spinner } from 'react-bootstrap';
 const MovieCard = ({ movie, playlists, updatePlaylists, isLoading, setIsLoading }) => {
     const [showOptions, setShowOptions] = useState(false);
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const [setSelectedPlaylist] = useState('');
+    const [selectedPlaylist, setSelectedPlaylist] = useState('');
     const [playlistName, setPlaylistName] = useState('');
     const [popupMessage, setPopupMessage] = useState('');
     const [showPopup, setShowPopup] = useState(false);
@@ -19,13 +19,13 @@ const MovieCard = ({ movie, playlists, updatePlaylists, isLoading, setIsLoading 
                 movie: movie
             }
             const response = await axios.post('https://movielibrary-backend-jw44.onrender.com/api/auth/addmovie',data);
-            updatePlaylists(response.data.library);
             setPopupMessage(`The "${movie.Title}" added successfully.`)
             setShowPopup(true);
-
+            
             setTimeout(() => {
                 setShowPopup(false);
                 setShowOptions(false);
+                updatePlaylists(response.data.library);
             }, 2000);
 
         } catch (error) {
@@ -67,8 +67,8 @@ const MovieCard = ({ movie, playlists, updatePlaylists, isLoading, setIsLoading 
             setShowPopup(false);
             setSelectedPlaylist(newPlaylist._id);
             addMovie(newPlaylist._id);
+            updatePlaylists(response.data.library);
           }, 1000);
-
         } catch (error) {
           if(error.response && error.response.status === 409){
             setPopupMessage('Playlist Already Created.');
