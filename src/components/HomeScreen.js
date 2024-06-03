@@ -62,7 +62,10 @@ const HomeScreen = () => {
   };
 
   const updatePlaylists = (newPlaylist) => {
-    setPlaylists(prevPlaylists => [...prevPlaylists, newPlaylist]);
+    setPlaylists(prevPlaylists =>{
+      const filteredPlaylists = prevPlaylists.filter(playlist => playlist._id !== newPlaylist._id);
+      return [...filteredPlaylists, newPlaylist]
+    }); 
   };
 
 

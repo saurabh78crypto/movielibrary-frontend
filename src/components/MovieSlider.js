@@ -73,7 +73,7 @@ const MovieSlider = ({playlists, updatePlaylists, isLoading, setIsLoading}) => {
           'Authorization': `Bearer ${token}`
         }
       });
-      console.log('Response: ', response);
+      updatePlaylists(response.data.library);
       setPopupMessage(`Playlist "${playlistName}" created.`);
       setShowPopup(true);
       closeModal();
@@ -82,7 +82,6 @@ const MovieSlider = ({playlists, updatePlaylists, isLoading, setIsLoading}) => {
         setPlaylistName('');
         setShowPopup(false);
       }, 2000);
-      updatePlaylists(response.data.library);
     } catch (error) {
       if(error.response && error.response.status === 409){
         setPopupMessage('Playlist Already Created.');

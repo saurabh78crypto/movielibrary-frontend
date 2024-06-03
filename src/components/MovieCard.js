@@ -5,7 +5,7 @@ import { Modal, Spinner } from 'react-bootstrap';
 const MovieCard = ({ movie, playlists, updatePlaylists, isLoading, setIsLoading }) => {
     const [showOptions, setShowOptions] = useState(false);
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const [selectedPlaylist, setSelectedPlaylist] = useState('');
+    const [, setSelectedPlaylist] = useState('');
     const [playlistName, setPlaylistName] = useState('');
     const [popupMessage, setPopupMessage] = useState('');
     const [showPopup, setShowPopup] = useState(false);
@@ -19,14 +19,14 @@ const MovieCard = ({ movie, playlists, updatePlaylists, isLoading, setIsLoading 
                 movie: movie
             }
             const response = await axios.post('https://movielibrary-backend-jw44.onrender.com/api/auth/addmovie',data);
+            updatePlaylists(response.data.library);
             setPopupMessage(`The "${movie.Title}" added successfully.`)
             setShowPopup(true);
             
             setTimeout(() => {
                 setShowPopup(false);
                 setShowOptions(false);
-                updatePlaylists(response.data.library);
-            }, 2000);
+            }, 1000);
 
         } catch (error) {
             if(error.response && error.response.status === 409){
@@ -61,14 +61,15 @@ const MovieCard = ({ movie, playlists, updatePlaylists, isLoading, setIsLoading 
           setPopupMessage(`Playlist "${playlistName}" created.`);
           setShowPopup(true);
           closeModal();
+          
+          setSelectedPlaylist(newPlaylist._id);
+          addMovie(newPlaylist._id);
+          updatePlaylists(response.data.library);
 
           setTimeout(() => {
             setPlaylistName('');
             setShowPopup(false);
-            setSelectedPlaylist(newPlaylist._id);
-            addMovie(newPlaylist._id);
-            updatePlaylists(response.data.library);
-          }, 1000);
+          }, 2000);
         } catch (error) {
           if(error.response && error.response.status === 409){
             setPopupMessage('Playlist Already Created.');
@@ -116,10 +117,17 @@ const MovieCard = ({ movie, playlists, updatePlaylists, isLoading, setIsLoading 
 
                 <>
                     <img src={movie.Poster} alt={`${movie.Title} Poster`} className="movie-poster" />
-                    <h3>{movie.Title}</h3>
-                    <p>Type: {movie.Type}</p>
-                    <p>Year: {movie.Year}</p>
-                    <p>IMDB ID: {movie.imdbID}</p>
+                    <div className="movie-card-desc">
+                        <div className="movie-card-desc-title">
+                            <h3>{movie.Title}</h3>
+                        </div>
+                        <div className="movie-card-desc-other">
+                            <p>Type: {movie.Type}</p>
+                            <p>Year: {movie.Year}</p>
+                            <p>IMDB ID: {movie.imdbID}</p>
+                        </div>
+                    </div>
+                    
                     <button className="add-to-library-btn" onClick={toggleOptions}>Add to Library</button>
                     {showOptions && (
                         <div id="option-menu" className="options-menu">
