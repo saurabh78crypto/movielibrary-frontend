@@ -23,5 +23,4 @@ const PlaylistItem = ({ playlist }) => {
   };
 
 
-
   export default PlaylistItem;

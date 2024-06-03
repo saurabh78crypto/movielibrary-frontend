@@ -4,12 +4,12 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus, faChevronLeft, faChevronRight } from '@fortawesome/free-solid-svg-icons';
-import { Modal } from 'react-bootstrap';
+import { Modal, Spinner } from 'react-bootstrap';
 import axios from 'axios';
 import PlaylistItem from './PlaylistItem';
 
 
-const MovieSlider = ({playlists}) => {
+const MovieSlider = ({playlists, updatePlaylists, isLoading, setIsLoading}) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [playlistName, setPlaylistName] = useState('');
   const [popupMessage, setPopupMessage] = useState('');
@@ -63,6 +63,7 @@ const MovieSlider = ({playlists}) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsLoading(true);
     try {
       const token = localStorage.getItem('token');
       
@@ -81,7 +82,7 @@ const MovieSlider = ({playlists}) => {
         setPlaylistName('');
         setShowPopup(false);
       }, 2000);
-
+      updatePlaylists(response.data.library);
     } catch (error) {
       if(error.response && error.response.status === 409){
         setPopupMessage('Playlist Already Created.');
@@ -94,6 +95,8 @@ const MovieSlider = ({playlists}) => {
       } else {
         console.error(error);
       }  
+    } finally {
+      setIsLoading(false);
     }
   }; 
 
@@ -113,59 +116,64 @@ const MovieSlider = ({playlists}) => {
  
   return (
     <div className='slider-container'>
-      <div className='slider-container-header'>
-        <h2>My Playlists</h2>
-      </div>
-        {showStaticCard && (
-          <div className='static-card' onClick={showModal}>
-            <FontAwesomeIcon icon={faPlus} className='plus-icon' />
-            <h3 className='text-1'>Create Your First</h3>
-            <h3 className='text-2'>Playlist</h3>
+      {isLoading? (
+        <Spinner /> 
+      ) : (
+        <>
+          <div className='slider-container-header'>
+            <h2>My Playlists</h2>
           </div>
-        )}
-      <Slider ref={sliderRef} {...sliderSettings}>
-        {!showStaticCard && playlists.map((playlist, index) => (
-          playlist && playlist._id? (
-            <div key={playlist._id} >
-              <PlaylistItem  playlist={playlist}/>
-            </div>
-          ) : null
-          ))}
-      </Slider>
-      <div className='slider-controls'>
-        <button onClick={() => scrollSlider('prev')}>
-          <FontAwesomeIcon icon={faChevronLeft}/>
-        </button>
-        <button onClick={() => scrollSlider('next')}>
-          <FontAwesomeIcon icon={faChevronRight}/>
-        </button>
-      </div>
-      
-      <Modal show={isModalOpen} onHide={closeModal} className='modal-custom' backdropClassName='transparent-backdrop'>
-        <Modal.Header closeButton className='modal-header-custom'>
-          <Modal.Title className='modal-title-custom'>Create Your First Playlist</Modal.Title>
-        </Modal.Header>
-        <Modal.Body className='modal-body-custom'>
-          <form onSubmit={handleSubmit}>
-            <label htmlFor="playlistName">Playlist Name:</label>
-
-            <input 
-              type="text" 
-              id='playlistName' 
-              name='playlistName' 
-              required 
-              value={playlistName}
-              onChange={(e) => setPlaylistName(e.target.value)}/>
-
-            <button type='submit'>Create Playlist</button>
-          </form>
-        </Modal.Body>
-      </Modal>
-      <Modal show={showPopup} onHide={() => setShowPopup(false)} centered>
-        <Modal.Header>
-        </Modal.Header>
-        <Modal.Body>{popupMessage}</Modal.Body>
-      </Modal>
+            {showStaticCard && (
+              <div className='static-card' onClick={showModal}>
+                <FontAwesomeIcon icon={faPlus} className='plus-icon' />
+                <h3 className='text-1'>Create Your First</h3>
+                <h3 className='text-2'>Playlist</h3>
+              </div>
+            )}
+          <Slider ref={sliderRef} {...sliderSettings}>
+            {!showStaticCard && playlists.map((playlist, index) => (
+              playlist && playlist._id? (
+                <div key={playlist._id} >
+                  <PlaylistItem  playlist={playlist}/>
+                </div>
+              ) : null
+              ))}
+          </Slider>
+          <div className='slider-controls'>
+            <button onClick={() => scrollSlider('prev')}>
+              <FontAwesomeIcon icon={faChevronLeft}/>
+            </button>
+            <button onClick={() => scrollSlider('next')}>
+              <FontAwesomeIcon icon={faChevronRight}/>
+            </button>
+          </div>
+            
+          <Modal show={isModalOpen} onHide={closeModal} className='modal-custom' backdropClassName='transparent-backdrop'>
+            <Modal.Header closeButton className='modal-header-custom'>
+              <Modal.Title className='modal-title-custom'>Create Your First Playlist</Modal.Title>
+            </Modal.Header>
+            <Modal.Body className='modal-body-custom'>
+              <form onSubmit={handleSubmit}>
+                <label htmlFor="playlistName">Playlist Name:</label>
+            
+                <input 
+                  type="text" 
+                  id='playlistName' 
+                  name='playlistName' 
+                  required 
+                  value={playlistName}
+                  onChange={(e) => setPlaylistName(e.target.value)}/>
+                <button type='submit'>Create Playlist</button>
+              </form>
+            </Modal.Body>
+          </Modal>
+          <Modal show={showPopup} onHide={() => setShowPopup(false)} centered>
+            <Modal.Header>
+            </Modal.Header>
+            <Modal.Body>{popupMessage}</Modal.Body>
+          </Modal>
+        </>
+      )}
     </div>
   );
 };

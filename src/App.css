@@ -1,3 +1,39 @@
+/* Spinner */
+.spinner-border {
+  width: 60px;
+  height: 60px; 
+  border: 3px solid #007bff; 
+  border-top-color: transparent;
+  border-right-color: transparent; 
+  border-radius: 50%; 
+  animation: spin 1s linear infinite; 
+  background-color: transparent;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@media (max-width: 768px) {
+  .spinner-border {
+     width: 40px; 
+     height: 40px;
+   }
+ }
+ 
+ @media (min-width: 769px) and (max-width: 1024px) {
+  .spinner-border {
+     width: 50px;
+     height: 50px; 
+   }
+ }
+/* Spinner */
+
 /* Navbar */
 .navbar {
   position: fixed;
@@ -62,10 +98,10 @@
     align-items: center;
   }
 }
-/* End of Navbar */
+/* Navbar */
 
 
-/* Sign In AND Sign Up */
+/* Sign In && Sign Up */
 .authFormContainer {
   max-width: 400px;
   margin: auto;
@@ -144,7 +180,7 @@
 .success-message.red {
   color: red;
 }
-/* End of SignIn and SignUp */
+/* Sign In && Sign Up */
 
 /* MovieCard */
 .movie-card {
@@ -196,9 +232,8 @@
   background-color: #218838; 
   box-shadow: 0 12px 20px 0 rgba(0,0,0,0.2);
 }
-/* End of Movie Card */
 
-/* option Menu */
+/* Option Menu */
 .options-menu {
   position: absolute;
   top: 530px;
@@ -224,7 +259,7 @@
 .options-menu li:hover {
   background-color: #f1f1f1;
 }
-/* End of Option Menu */
+/* Option Menu */
 
 /* Static Card */
 .static-card {
@@ -261,14 +296,14 @@
   cursor: pointer;
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
 }
-/* End of Static Card */
+/* Static Card */
 
 @media (max-width: 768px) {
  .movie-grid {
     grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
   }
 }
-/* End of Movie Card */
+/* MovieCard */
 
 /* Home Screen */
 .home-screen {
@@ -315,7 +350,7 @@
 .search-button:hover {
   background-color: #0056b3;
 }
-/* End of Home Screen */
+/* Home Screen */
 
 /* Slider */
 .slider-container {
@@ -355,7 +390,7 @@
   padding: 0 10px;
 }
 
-/* End of Slider */
+/* Slider */
 
 /* Playlist Item */
 .playlist-item {
@@ -435,7 +470,7 @@
   flex-grow: 1;
   color: #333;
 }
-/* End of Playlist Item */
+/* Playlist Item */
   
 /* Modal */
 .modal-custom {
@@ -509,15 +544,4 @@
     margin: 30px auto; 
   }
 }
-/* End of Modal */
-  
-  
- 
-
-
-/* .custom-slide:hover {
-  transform: scale(1.05);
-} */
-
-
-
+/* Modal */

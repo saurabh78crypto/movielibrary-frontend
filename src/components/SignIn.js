@@ -5,18 +5,22 @@ import { Link, useNavigate } from 'react-router-dom';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
 import { signInSchema } from '../validationSchema/index';
+import { Spinner } from 'react-bootstrap';
 
 
 const SignIn = () => {
   const { setCurrentUser, setIsLoggedIn } = useAuth();
   const [showSuccessMessage, setShowSuccessMessage] = useState(false);
   const [successMessage, setSuccessMessage] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
+
   const {register, handleSubmit, formState: {errors}, reset} = useForm({
     resolver: yupResolver(signInSchema)
   })
   
   const onSubmit = async (data) => {
+    setIsLoading(true);
     try {
       const response = await axios.post('https://movielibrary-backend-jw44.onrender.com/api/auth/login', data);
       const {token} = response.data;
@@ -52,44 +56,53 @@ const SignIn = () => {
       } else {
         console.error(error);
       }
+    } finally {
+      setIsLoading(false);
     }
   };
 
   return (
-    <div className="authFormContainer">
-      <h2 className='welcome-msg'>Welcome Back!</h2>
-      {showSuccessMessage && (
-        <div className={`success-message ${successMessage.includes('logged')? 'green' : 'red'}`}>
-          {successMessage}
-        </div>
+    <div className="authFormContainer"> 
+      {isLoading? (
+        <Spinner />
+      ) : (
+        <>
+
+          <h2 className='welcome-msg'>Welcome Back!</h2>
+          {showSuccessMessage && (
+            <div className={`success-message ${successMessage.includes('logged')? 'green' : 'red'}`}>
+              {successMessage}
+            </div>
+          )}
+          <form onSubmit={handleSubmit(onSubmit)} className="authForm">
+            <label htmlFor="email" className='authFormLabel'>Email:</label>
+            <input
+              {...register('email')}
+              id="email"
+              name="email"
+              type="email"
+              required
+              autoComplete='username'
+            />
+            {errors.email && <p className="error">{errors.email.message}</p>}
+        
+            <label htmlFor="password" className='authFormLabel'>Password:</label>
+            <input
+              {...register('password')}
+              id="password"
+              name="password"
+              type="password"
+              required
+              autoComplete="current-password"
+            />
+            {errors.password && <p className="error">{errors.password.message}</p>}
+        
+            <button type="submit" className='authFormButton'>Sign In</button>
+        
+            <p className="registerText">Not registered <Link to="/signup" className="registerLink">Register Now</Link></p>
+          </form>
+        </>
       )}
-      <form onSubmit={handleSubmit(onSubmit)} className="authForm">
-        <label htmlFor="email" className='authFormLabel'>Email:</label>
-        <input
-          {...register('email')}
-          id="email"
-          name="email"
-          type="email"
-          required
-          autoComplete='username'
-        />
-        {errors.email && <p className="error">{errors.email.message}</p>}
-
-        <label htmlFor="password" className='authFormLabel'>Password:</label>
-        <input
-          {...register('password')}
-          id="password"
-          name="password"
-          type="password"
-          required
-          autoComplete="current-password"
-        />
-        {errors.password && <p className="error">{errors.password.message}</p>}
-
-        <button type="submit" className='authFormButton'>Sign In</button>
-
-        <p className="registerText">Not registered <Link to="/signup" className="registerLink">Register Now</Link></p>
-      </form>
     </div>
   );
 };
