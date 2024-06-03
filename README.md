@@ -13,8 +13,7 @@ https://github.com/saurabh78crypto/movielibrary-frontend.git
 cd movielibrary-frontend
 ```
 3. Replace the API request URL
- Search for all instances of https://movielibrary-backend-jw44.onrender.com/ and replace them with    
- http://localhost:3000/.
+    - Search for all instances of https://movielibrary-backend-jw44.onrender.com/ and replace them with http://localhost:3000/.
 
 4. Install dependencies
 ```
